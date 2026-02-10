@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学級経営KPIナビ - 高校担任のためのマネジメント実践ツール</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ヘッダー -->
+  <header class="header">
+    <div class="container">
+      <h1 class="header-title">学級経営KPIナビ</h1>
+      <p class="header-sub">高校担任のためのマネジメント実践ツール</p>
+    </div>
+  </header>
+
+  <!-- ナビゲーション -->
+  <nav class="nav">
+    <div class="container">
+      <ul class="nav-list">
+        <li><a href="#kpi-section" class="nav-link active" data-section="kpi-section">ゴール別KPI</a></li>
+        <li><a href="#analyzer-section" class="nav-link" data-section="analyzer-section">KPI提案ツール</a></li>
+        <li><a href="#practices-section" class="nav-link" data-section="practices-section">実践事例集</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main container">
+
+    <!-- ===== セクション1: ゴール別KPI ===== -->
+    <section id="kpi-section" class="section">
+      <h2 class="section-title">ゴール別 × 学年別 KPI一覧</h2>
+      <p class="section-desc">生徒の進路目標に合わせたKPIを学年ごとに確認できます。タブを切り替えてご確認ください。</p>
+
+      <!-- ゴール選択タブ -->
+      <div class="goal-tabs">
+        <button class="goal-tab active" data-goal="university">
+          <span class="goal-icon">🎓</span>大学受験
+        </button>
+        <button class="goal-tab" data-goal="qualification">
+          <span class="goal-icon">📝</span>資格試験
+        </button>
+        <button class="goal-tab" data-goal="employment">
+          <span class="goal-icon">💼</span>就職
+        </button>
+      </div>
+
+      <!-- KPIカード表示エリア -->
+      <div id="kpi-display" class="kpi-display">
+        <!-- JSで動的に生成 -->
+      </div>
+    </section>
+
+    <!-- ===== セクション2: KPI提案ツール ===== -->
+    <section id="analyzer-section" class="section">
+      <h2 class="section-title">KPI提案ツール</h2>
+      <p class="section-desc">クラスの状況や課題を入力すると、最適なKPIとマネジメント手法を提案します。</p>
+
+      <div class="analyzer-layout">
+        <div class="analyzer-input-area">
+          <div class="form-group">
+            <label for="grade-select">学年</label>
+            <select id="grade-select">
+              <option value="1">1年生</option>
+              <option value="2">2年生</option>
+              <option value="3">3年生</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="goal-select">主な進路目標</label>
+            <select id="goal-select">
+              <option value="university">大学受験</option>
+              <option value="qualification">資格試験</option>
+              <option value="employment">就職</option>
+              <option value="mixed">混合クラス</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="situation-input">クラスの状況・課題を入力してください</label>
+            <textarea id="situation-input" rows="6" placeholder="例: 2年生の進学クラスです。模試の成績が伸び悩んでおり、特に英語と数学の偏差値が低い生徒が多いです。クラス全体の学習モチベーションが下がっており、遅刻も増えています。保護者面談を控えていますが、どのような指標を使って説明すればよいかわかりません。"></textarea>
+          </div>
+          <button id="analyze-btn" class="btn-primary">分析してKPIを提案</button>
+        </div>
+
+        <div class="analyzer-result-area" id="analyzer-result">
+          <div class="result-placeholder">
+            <p>左のフォームに情報を入力し「分析してKPIを提案」ボタンを押してください。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== セクション3: 実践事例集 ===== -->
+    <section id="practices-section" class="section">
+      <h2 class="section-title">マネジメント実践事例集</h2>
+      <p class="section-desc">現場で使える具体的なマネジメント手法を分野別にまとめています。</p>
+
+      <div class="practice-filter">
+        <button class="filter-btn active" data-category="all">すべて</button>
+        <button class="filter-btn" data-category="motivation">モチベーション</button>
+        <button class="filter-btn" data-category="discipline">生活指導</button>
+        <button class="filter-btn" data-category="academic">学習管理</button>
+        <button class="filter-btn" data-category="career">進路指導</button>
+        <button class="filter-btn" data-category="parent">保護者連携</button>
+        <button class="filter-btn" data-category="team">学級組織</button>
+      </div>
+
+      <div id="practices-display" class="practices-grid">
+        <!-- JSで動的に生成 -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- フッター -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 学級経営KPIナビ ― 高校担任のためのマネジメント実践ツール</p>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
