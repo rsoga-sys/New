@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学級経営KPIナビ - 高校担任のためのマネジメント実践ツール</title>
+  <style>
+/* ----- リセット & ベース ----- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #1a5276;
+  --primary-light: #2980b9;
+  --primary-lighter: #d4e6f1;
+  --primary-bg: #eaf2f8;
+  --accent: #e67e22;
+  --accent-light: #f39c12;
+  --success: #27ae60;
+  --success-light: #d5f5e3;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+  --text: #2c3e50;
+  --text-light: #5d6d7e;
+  --text-muted: #95a5a6;
+  --bg: #f8f9fa;
+  --white: #ffffff;
+  --border: #d5dbdb;
+  --border-light: #eaeded;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --radius: 8px;
+  --radius-lg: 12px;
+  --transition: 0.2s ease;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ----- ヘッダー ----- */
+.header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: var(--white);
+  padding: 48px 0 40px;
+  text-align: center;
+}
+
+.header-title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.header-sub {
+  font-size: 1rem;
+  opacity: 0.85;
+  font-weight: 400;
+}
+
+/* ----- ナビゲーション ----- */
+.nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  gap: 0;
+  justify-content: center;
+}
+
+.nav-link {
+  display: block;
+  padding: 14px 28px;
+  text-decoration: none;
+  color: var(--text-light);
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-bottom: 3px solid transparent;
+  transition: var(--transition);
+}
+
+.nav-link:hover {
+  color: var(--primary);
+  background: var(--primary-bg);
+}
+
+.nav-link.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+/* ----- セクション共通 ----- */
+.section {
+  padding: 56px 0;
+}
+
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.section-desc {
+  color: var(--text-light);
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 0.95rem;
+}
+
+/* ----- ゴール選択タブ ----- */
+.goal-tabs {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.goal-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border: 2px solid var(--border);
+  border-radius: 50px;
+  background: var(--white);
+  color: var(--text-light);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.goal-tab:hover {
+  border-color: var(--primary-light);
+  color: var(--primary);
+  background: var(--primary-bg);
+}
+
+.goal-tab.active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--white);
+}
+
+.goal-icon {
+  font-size: 1.2rem;
+}
+
+/* ----- 学年ブロック ----- */
+.grade-block {
+  margin-bottom: 48px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.grade-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: var(--white);
+  padding: 24px 32px;
+}
+
+.grade-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.grade-overview {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* ----- KPIカード ----- */
+.kpi-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+  padding: 24px;
+}
+
+.kpi-card {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: var(--transition);
+  animation: fadeInUp 0.3s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.kpi-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-lighter);
+}
+
+.kpi-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--primary-bg);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.kpi-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--white);
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.kpi-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.kpi-card-body {
+  padding: 14px 16px;
+}
+
+.kpi-detail {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.kpi-detail:last-child {
+  margin-bottom: 0;
+}
+
+.kpi-label {
+  flex-shrink: 0;
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 4px;
+  background: var(--border-light);
+  color: var(--text-light);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.8;
+}
+
+.kpi-value {
+  color: var(--text);
+}
+
+.kpi-value.target {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.kpi-value.freq {
+  color: var(--primary-light);
+  font-weight: 500;
+}
+
+/* ----- マネジメントのポイント ----- */
+.management-tips {
+  padding: 20px 32px 28px;
+  background: var(--primary-bg);
+  border-top: 1px solid var(--border-light);
+}
+
+.tips-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+.tips-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 8px;
+}
+
+.tips-list li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.tips-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+/* ----- KPI提案ツール ----- */
+.analyzer-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.analyzer-input-area {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 28px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--white);
+  transition: var(--transition);
+}
+
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.15);
+}
+
+.form-group textarea {
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* ----- 分析結果 ----- */
+.analyzer-result-area {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 28px;
+  min-height: 400px;
+}
+
+.result-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.result-error {
+  color: var(--danger);
+  text-align: center;
+  padding: 40px 0;
+  font-weight: 500;
+}
+
+.result-header {
+  margin-bottom: 24px;
+}
+
+.result-header h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.result-meta {
+  display: flex;
+  gap: 8px;
+}
+
+.meta-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: var(--primary-bg);
+  color: var(--primary);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.detected-issues {
+  margin-bottom: 28px;
+}
+
+.detected-issues h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.issue-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.issue-tag {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: var(--accent);
+  color: var(--white);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.suggestion-block {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.suggestion-block:last-of-type {
+  border-bottom: none;
+}
+
+.suggestion-category {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 16px;
+  padding-left: 12px;
+  border-left: 4px solid var(--accent);
+}
+
+.suggestion-section {
+  margin-bottom: 16px;
+}
+
+.suggestion-section h5 {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 10px;
+}
+
+.suggested-kpis {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.suggested-kpi {
+  padding: 12px 14px;
+  background: var(--primary-bg);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--primary-light);
+}
+
+.suggested-kpi-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.suggested-kpi-detail {
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.skpi-label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.suggested-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.suggested-method {
+  padding: 12px 14px;
+  background: var(--success-light);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--success);
+}
+
+.suggested-method-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--success);
+  margin-bottom: 4px;
+}
+
+.suggested-method-desc {
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.goal-suggestion {
+  background: #fef9e7;
+  border-radius: var(--radius);
+  padding: 20px;
+  border-bottom: none;
+}
+
+.overall-advice {
+  margin-top: 28px;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--primary-bg) 0%, #d5f5e3 100%);
+  border-radius: var(--radius);
+}
+
+.overall-advice h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+.overall-advice p {
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.8;
+}
+
+/* ----- 実践事例集 ----- */
+.practice-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.filter-btn {
+  padding: 8px 20px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--white);
+  color: var(--text-light);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.filter-btn:hover {
+  border-color: var(--primary-light);
+  color: var(--primary);
+}
+
+.filter-btn.active {
+  background: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+}
+
+.practices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 20px;
+}
+
+.practice-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  transition: var(--transition);
+  animation: fadeInUp 0.3s ease forwards;
+  opacity: 0;
+}
+
+.practice-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.practice-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.practice-category-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: var(--primary);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.practice-target {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.practice-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.practice-problem {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.practice-desc {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  margin-bottom: 14px;
+  line-height: 1.7;
+}
+
+.practice-details {
+  border-top: 1px solid var(--border-light);
+  padding-top: 12px;
+}
+
+.practice-details summary {
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--primary-light);
+  padding: 6px 0;
+  transition: var(--transition);
+}
+
+.practice-details summary:hover {
+  color: var(--primary);
+}
+
+.practice-details[open] summary {
+  margin-bottom: 14px;
+}
+
+.practice-steps,
+.practice-effect,
+.practice-kpi-link {
+  margin-bottom: 14px;
+}
+
+.practice-steps h5,
+.practice-effect h5,
+.practice-kpi-link h5 {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.practice-steps ol {
+  padding-left: 20px;
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.8;
+}
+
+.practice-effect p,
+.practice-kpi-link p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.7;
+}
+
+.no-results {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px 0;
+  grid-column: 1 / -1;
+}
+
+/* ----- フッター ----- */
+.footer {
+  background: var(--primary);
+  color: var(--white);
+  text-align: center;
+  padding: 24px 0;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+/* ----- レスポンシブ ----- */
+@media (max-width: 900px) {
+  .analyzer-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .practices-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tips-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 32px 0 28px;
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+  }
+
+  .nav-link {
+    padding: 12px 16px;
+    font-size: 0.85rem;
+  }
+
+  .section {
+    padding: 36px 0;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+  }
+
+  .goal-tab {
+    padding: 10px 18px;
+    font-size: 0.9rem;
+  }
+
+  .grade-header {
+    padding: 18px 20px;
+  }
+
+  .kpi-cards {
+    padding: 16px;
+  }
+
+  .management-tips {
+    padding: 16px 20px 20px;
+  }
+
+  .analyzer-input-area,
+  .analyzer-result-area {
+    padding: 20px;
+  }
+
+  .practice-card {
+    padding: 18px;
+  }
+}
+  </style>
+</head>
+<body>
+  <!-- ヘッダー -->
+  <header class="header">
+    <div class="container">
+      <h1 class="header-title">学級経営KPIナビ</h1>
+      <p class="header-sub">高校担任のためのマネジメント実践ツール</p>
+    </div>
+  </header>
+
+  <!-- ナビゲーション -->
+  <nav class="nav">
+    <div class="container">
+      <ul class="nav-list">
+        <li><a href="#kpi-section" class="nav-link active" data-section="kpi-section">ゴール別KPI</a></li>
+        <li><a href="#analyzer-section" class="nav-link" data-section="analyzer-section">KPI提案ツール</a></li>
+        <li><a href="#practices-section" class="nav-link" data-section="practices-section">実践事例集</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main container">
+
+    <!-- ===== セクション1: ゴール別KPI ===== -->
+    <section id="kpi-section" class="section">
+      <h2 class="section-title">ゴール別 × 学年別 KPI一覧</h2>
+      <p class="section-desc">生徒の進路目標に合わせたKPIを学年ごとに確認できます。タブを切り替えてご確認ください。</p>
+
+      <!-- ゴール選択タブ -->
+      <div class="goal-tabs">
+        <button class="goal-tab active" data-goal="university">
+          <span class="goal-icon">&#x1F393;</span>大学受験
+        </button>
+        <button class="goal-tab" data-goal="qualification">
+          <span class="goal-icon">&#x1F4DD;</span>資格試験
+        </button>
+        <button class="goal-tab" data-goal="employment">
+          <span class="goal-icon">&#x1F4BC;</span>就職
+        </button>
+      </div>
+
+      <!-- KPIカード表示エリア -->
+      <div id="kpi-display" class="kpi-display"></div>
+    </section>
+
+    <!-- ===== セクション2: KPI提案ツール ===== -->
+    <section id="analyzer-section" class="section">
+      <h2 class="section-title">KPI提案ツール</h2>
+      <p class="section-desc">クラスの状況や課題を入力すると、最適なKPIとマネジメント手法を提案します。</p>
+
+      <div class="analyzer-layout">
+        <div class="analyzer-input-area">
+          <div class="form-group">
+            <label for="grade-select">学年</label>
+            <select id="grade-select">
+              <option value="1">1年生</option>
+              <option value="2">2年生</option>
+              <option value="3">3年生</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="goal-select">主な進路目標</label>
+            <select id="goal-select">
+              <option value="university">大学受験</option>
+              <option value="qualification">資格試験</option>
+              <option value="employment">就職</option>
+              <option value="mixed">混合クラス</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="situation-input">クラスの状況・課題を入力してください</label>
+            <textarea id="situation-input" rows="6" placeholder="例: 2年生の進学クラスです。模試の成績が伸び悩んでおり、特に英語と数学の偏差値が低い生徒が多いです。クラス全体の学習モチベーションが下がっており、遅刻も増えています。保護者面談を控えていますが、どのような指標を使って説明すればよいかわかりません。"></textarea>
+          </div>
+          <button id="analyze-btn" class="btn-primary">分析してKPIを提案</button>
+        </div>
+
+        <div class="analyzer-result-area" id="analyzer-result">
+          <div class="result-placeholder">
+            <p>左のフォームに情報を入力し「分析してKPIを提案」ボタンを押してください。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== セクション3: 実践事例集 ===== -->
+    <section id="practices-section" class="section">
+      <h2 class="section-title">マネジメント実践事例集</h2>
+      <p class="section-desc">現場で使える具体的なマネジメント手法を分野別にまとめています。</p>
+
+      <div class="practice-filter">
+        <button class="filter-btn active" data-category="all">すべて</button>
+        <button class="filter-btn" data-category="motivation">モチベーション</button>
+        <button class="filter-btn" data-category="discipline">生活指導</button>
+        <button class="filter-btn" data-category="academic">学習管理</button>
+        <button class="filter-btn" data-category="career">進路指導</button>
+        <button class="filter-btn" data-category="parent">保護者連携</button>
+        <button class="filter-btn" data-category="team">学級組織</button>
+      </div>
+
+      <div id="practices-display" class="practices-grid"></div>
+    </section>
+
+  </main>
+
+  <!-- フッター -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 学級経営KPIナビ ― 高校担任のためのマネジメント実践ツール</p>
+    </div>
+  </footer>
+
+  <script>
+// =============================================================
+// データ定義
+// =============================================================
+var KPI_DATA = {
+  university: {
+    label: "大学受験",
+    grades: {
+      1: {
+        title: "1年生 ― 基礎固め・学習習慣形成期",
+        overview: "高校学習への適応と基礎学力の定着を最優先に、学習習慣の土台を作る時期。",
+        kpis: [
+          { name: "定期考査平均点の推移", target: "学年平均+5点以上を維持", how: "考査ごとに個人面談で振り返りシートを記入。目標と結果のギャップを可視化する。", frequency: "年5回（定期考査ごと）" },
+          { name: "家庭学習時間（平日）", target: "平日2時間以上の生徒割合70%", how: "週次の学習記録カード（15分単位で記録）を提出。クラス全体の分布をグラフで共有。", frequency: "週次集計" },
+          { name: "模試偏差値の基準到達率", target: "偏差値50以上の生徒割合60%", how: "模試後に自己分析シートを作成。苦手分野の「克服プラン」を3行で書かせる。", frequency: "年2〜3回" },
+          { name: "授業内小テスト合格率", target: "各教科80%以上合格", how: "小テスト不合格者には再テストの仕組みを用意。「全員合格」をクラス目標にする。", frequency: "週次" },
+          { name: "遅刻・欠席率", target: "月間遅刻率3%以下", how: "月初に前月の出席状況を共有。皆勤者を学級通信で紹介する。", frequency: "月次" }
+        ],
+        management: [
+          "入学直後の「学習オリエンテーション」で高校学習の特徴と大学受験までの見通しを共有",
+          "先輩合格者のタイムラインを教室掲示し、3年間の全体像をイメージさせる",
+          "個人面談は学期に2回以上。成績データだけでなく生活リズムも確認",
+          "保護者通信で「家庭学習の環境づくりチェックリスト」を配布"
+        ]
+      },
+      2: {
+        title: "2年生 ― 志望校意識化・弱点克服期",
+        overview: "中だるみを防止しつつ、志望校を具体化し弱点教科の集中対策を行う重要な時期。",
+        kpis: [
+          { name: "志望校決定率", target: "第1志望が明確な生徒割合80%（2学期末）", how: "進路希望調査を学期ごとに実施。面談で志望理由と現状のギャップを確認する。", frequency: "学期ごと" },
+          { name: "模試偏差値の前回比伸び", target: "前回比+2以上の生徒割合50%", how: "模試ごとに伸びた教科・下がった教科を色分けシートで整理。成功体験を言語化させる。", frequency: "年3回" },
+          { name: "弱点教科の改善度", target: "最低評定科目が1段階以上向上", how: "個別の「弱点教科克服計画」を作成。月次で進捗を確認し、教科担任と連携する。", frequency: "定期考査ごと" },
+          { name: "家庭学習時間（平日）", target: "平日2.5時間以上の生徒割合60%", how: "スタディプランナーを導入。週末に翌週の計画を立て、金曜に振り返る習慣をつける。", frequency: "週次集計" },
+          { name: "オープンキャンパス参加数", target: "1人3校以上（夏季休業中）", how: "一覧表を掲示し、参加後のレポートを共有。クラスメイトの情報が動機づけになる。", frequency: "夏季集計" }
+        ],
+        management: [
+          "「中だるみ防止プロジェクト」として2年生限定の学年目標をクラスで決定",
+          "月1回の「志望校リサーチタイム」を設定し、調べ学習とペア共有を行う",
+          "教科担任との連携会議を月次で実施し、気になる生徒の情報を共有",
+          "模試結果をもとに「ここから逆転グループ」「安定飛行グループ」等の学習チームを編成"
+        ]
+      },
+      3: {
+        title: "3年生 ― 受験実践・メンタル管理期",
+        overview: "受験本番に向けた学力の仕上げと、メンタル面のサポートを両立させる最終段階。",
+        kpis: [
+          { name: "志望校判定の推移", target: "A〜C判定の生徒割合70%（秋模試）", how: "模試ごとの判定推移グラフを個人ファイルで管理。面談時に一緒に確認する。", frequency: "模試ごと" },
+          { name: "過去問演習達成率", target: "志望校過去5年分を12月末までに完了", how: "進捗管理シートを教室掲示。完了した年度にシールを貼る可視化方式。", frequency: "週次確認" },
+          { name: "出願準備完了率", target: "出願書類100%期日内提出", how: "出願カレンダーをクラス全体で共有。チェックリスト方式で抜け漏れを防止。", frequency: "随時" },
+          { name: "メンタルヘルス指標", target: "ストレスチェックで「要注意」0人", how: "月次の簡易ストレスチェック（5問）を実施。気になる生徒にはすぐ個別面談。", frequency: "月次" },
+          { name: "学習時間（休日）", target: "休日8時間以上の生徒割合70%", how: "自習室利用ログとスタディプランナーを併用。学習仲間グループの形成を支援。", frequency: "週次" }
+        ],
+        management: [
+          "個別面談の頻度を月2回に増やし、学習計画と精神面の両方をフォロー",
+          "「受験カレンダー」を教室に大きく掲示し、クラス全体のカウントダウン意識を醸成",
+          "合格報告ボードを設置し、推薦合格者が一般入試組を応援する文化を作る",
+          "保護者向け「受験期の家庭サポートガイド」を配布（食事・声かけ・見守り方）"
+        ]
+      }
+    }
+  },
+  qualification: {
+    label: "資格試験",
+    grades: {
+      1: {
+        title: "1年生 ― 資格認知・基礎資格取得期",
+        overview: "資格試験の意義を理解し、基礎レベルの資格取得で成功体験を積む時期。",
+        kpis: [
+          { name: "基礎資格合格率", target: "情報処理・簿記等の基礎級合格率80%", how: "資格カレンダーを年度初めに配布。クラス全員の受験予定を一覧化する。", frequency: "試験ごと" },
+          { name: "資格学習の日次取組率", target: "放課後30分以上の資格学習実施率70%", how: "放課後学習タイムを設定。学習記録カードで取り組み状況を管理する。", frequency: "週次" },
+          { name: "検定試験受験率", target: "年間2種類以上の検定受験100%", how: "「資格チャレンジカード」を配布し、受験した資格にスタンプを押す仕組み。", frequency: "学期ごと" },
+          { name: "授業理解度（専門科目）", target: "専門科目の評定平均3.5以上", how: "小テストと定期考査の結果を資格試験の出題範囲と紐づけて解説する。", frequency: "定期考査ごと" },
+          { name: "出席率", target: "年間出席率97%以上", how: "資格試験の受験資格に出席要件があることを意識づけ。月次で共有。", frequency: "月次" }
+        ],
+        management: [
+          "入学ガイダンスで「資格ロードマップ」を提示し3年間の取得計画を描かせる",
+          "合格者の名前を教室・廊下に掲示し、成功体験の可視化とモチベーション向上を図る",
+          "上級生の合格体験談を聞く機会を学期に1回設定",
+          "資格学習の「ペア学習制度」を導入し、教え合いで定着率を高める"
+        ]
+      },
+      2: {
+        title: "2年生 ― 上位資格挑戦・実践力養成期",
+        overview: "基礎資格の土台の上に、上位資格への挑戦と実践的スキルの習得を進める時期。",
+        kpis: [
+          { name: "上位資格合格率", target: "2級レベルの資格合格率50%", how: "個別の資格取得計画を面談で策定。月次で進捗を確認する。", frequency: "試験ごと" },
+          { name: "累計取得資格数", target: "1人平均4種類以上", how: "「資格ポートフォリオ」を個人ファイルで管理。面談時に振り返る。", frequency: "学期ごと" },
+          { name: "模擬問題正答率", target: "過去問正答率70%以上", how: "週末課題として過去問を出題。正答率の推移をグラフ化して自己成長を実感させる。", frequency: "月次" },
+          { name: "実技・実習の達成度", target: "実習課題の完了率100%", how: "実習チェックシートで工程管理。未完了者には補習の機会を設ける。", frequency: "単元ごと" },
+          { name: "学習計画の実行率", target: "週間計画の実行率80%以上", how: "毎週月曜に計画を立て、金曜に実行率を自己採点。クラス平均を共有。", frequency: "週次" }
+        ],
+        management: [
+          "「資格マスター表」を教室掲示し、取得状況を可視化してクラス全体の意欲を高める",
+          "外部講師や企業見学を通じて資格の実務的価値を体感させる",
+          "合格者が未合格者をサポートする「資格メンター制度」を運用",
+          "保護者通信で資格取得の進捗と今後の計画を定期報告"
+        ]
+      },
+      3: {
+        title: "3年生 ― 最終資格取得・進路決定期",
+        overview: "卒業までに目標資格を取得し、就職・進学の進路決定に結びつける最終段階。",
+        kpis: [
+          { name: "目標資格の最終合格率", target: "卒業時点での目標資格合格率90%", how: "個別面談で残りの資格を確認し、受験スケジュールを最適化する。", frequency: "試験ごと" },
+          { name: "累計取得資格数", target: "1人平均6種類以上", how: "ポートフォリオを完成させ、履歴書に記載できる形に整理する。", frequency: "学期ごと" },
+          { name: "進路決定率", target: "12月末時点で進路決定率95%", how: "進路希望と取得資格のマッチングを面談で確認。未決定者には集中サポート。", frequency: "月次" },
+          { name: "面接・試験対策の完了度", target: "模擬面接3回以上実施率100%", how: "面接練習のスケジュール表を作成。担任・副担任・外部講師でローテーション。", frequency: "随時" },
+          { name: "不合格時のリカバリー率", target: "再受験での合格率80%", how: "不合格分析シートで原因を特定し、次回までの学習計画を即日作成する。", frequency: "随時" }
+        ],
+        management: [
+          "「資格×進路マッチング面談」を全員に実施し、取得資格の活かし方を具体化",
+          "早期に進路が決まった生徒には「ピアサポーター」として未決定者の支援を依頼",
+          "履歴書・面接での資格アピール方法を指導する特別授業を実施",
+          "卒業後のスキルアップ計画（上位資格・継続学習）も視野に入れた面談を行う"
+        ]
+      }
+    }
+  },
+  employment: {
+    label: "就職",
+    grades: {
+      1: {
+        title: "1年生 ― 社会人基礎力・職業観形成期",
+        overview: "基本的な社会人マナーと勤労観を養い、将来の就職に向けた土台を作る時期。",
+        kpis: [
+          { name: "出席率", target: "年間出席率98%以上", how: "「皆勤カレンダー」を個人配布。月間皆勤達成でシール。就職では出席率が最重要と繰り返し伝える。", frequency: "月次" },
+          { name: "遅刻回数", target: "月間遅刻0回の生徒割合90%", how: "遅刻した場合は翌日に「改善カード」を提出。根本原因（夜更かし等）を一緒に分析する。", frequency: "月次" },
+          { name: "基本マナーの定着度", target: "マナーチェック合格率100%", how: "挨拶・身だしなみ・言葉遣いの「マナーチェックリスト」を月1回実施。ペアで相互評価。", frequency: "月次" },
+          { name: "職業調べ学習の完了率", target: "興味のある職業3つ以上の調べ学習100%完了", how: "「職業カード」を作成し、クラスで共有プレゼンを実施。視野を広げる。", frequency: "学期ごと" },
+          { name: "評定平均", target: "評定平均3.0以上の生徒割合80%", how: "就職時に評定が選考材料になることを伝え、定期考査の目標設定を支援する。", frequency: "学期ごと" }
+        ],
+        management: [
+          "年度初めに「就職に向けた3年間の見通し」を保護者にも共有するガイダンスを実施",
+          "月1回の「社会人マナー講座」をSHRで10分実施（名刺交換、電話応対等をロールプレイ）",
+          "地域企業の職場見学を年2回実施し、「働く大人」のロールモデルに触れさせる",
+          "生活ノート（日誌）を毎日提出させ、コメントで関係構築とセルフマネジメント力を養う"
+        ]
+      },
+      2: {
+        title: "2年生 ― 職種絞り込み・インターン経験期",
+        overview: "希望職種を絞り込み、インターンシップ等の実体験を通じて就職への具体的準備を進める時期。",
+        kpis: [
+          { name: "希望職種の明確化率", target: "第1〜3希望の職種が決まっている生徒割合80%", how: "進路希望調査を学期ごとに実施。面談で適性検査の結果と照合する。", frequency: "学期ごと" },
+          { name: "インターンシップ参加率", target: "夏季インターンシップ参加率100%", how: "インターンシップ先リストを早期に配布。希望調査→マッチング→事前指導の流れを確立。", frequency: "年次" },
+          { name: "出席率の維持", target: "年間出席率98%以上を維持", how: "「就職に必要な出席率」を求人票の実例で示し、危機感を持たせる。", frequency: "月次" },
+          { name: "コミュニケーション力評価", target: "グループワーク評価B以上の生徒割合70%", how: "月1回のグループディスカッション演習を実施。相互評価シートで振り返る。", frequency: "月次" },
+          { name: "基礎資格の取得", target: "就職に有利な資格1つ以上取得率80%", how: "業界別の推奨資格リストを提示。個別の取得計画を面談で策定する。", frequency: "学期ごと" }
+        ],
+        management: [
+          "インターンシップの事前指導として「職場での心構え」ワークショップを実施",
+          "卒業生（就職組）を招いた座談会を年2回開催し、リアルな職場情報を提供",
+          "適性検査（職業興味検査等）の結果をもとにした個別面談を全員に実施",
+          "「求人票の読み方講座」を開催し、労働条件を正しく理解する力を養う"
+        ]
+      },
+      3: {
+        title: "3年生 ― 就職活動・内定獲得期",
+        overview: "就職試験に向けた実践的準備と、内定獲得後の社会人準備を行う最終段階。",
+        kpis: [
+          { name: "内定率", target: "10月末時点で内定率90%、12月末100%", how: "就職活動状況を週次で一覧管理。未内定者には個別の集中支援プランを策定。", frequency: "週次（就活期間中）" },
+          { name: "応募書類の完成度", target: "履歴書・エントリーシートの添削3回以上完了率100%", how: "段階的な添削プロセスを設定。担任→進路指導部→外部講師の3段階チェック。", frequency: "随時" },
+          { name: "面接練習実施回数", target: "1人5回以上の模擬面接完了率100%", how: "模擬面接のローテーション表を作成。動画撮影による自己チェックも導入。", frequency: "週次（就活期間中）" },
+          { name: "筆記試験対策の達成度", target: "SPI模擬テスト正答率70%以上", how: "朝学習の時間にSPI対策ドリルを実施。弱点分野を個別にフォローする。", frequency: "週次" },
+          { name: "出席率（直前期）", target: "4〜9月の出席率99%以上", how: "「企業は出席率を見る」を合言葉に、クラス全体で声をかけ合う文化を作る。", frequency: "週次" }
+        ],
+        management: [
+          "「就職対策ウィーク」を設定し、集中的に面接練習・書類添削・企業研究を行う",
+          "企業の人事担当者を招いた模擬面接会を実施し、実践的なフィードバックを得る",
+          "内定者が未内定者をサポートする「就活バディ制度」を導入",
+          "内定後は「社会人準備講座」（マネーリテラシー、労働法基礎、ビジネスメール）を実施",
+          "保護者向けに「就職後の初任給管理・社会保険」についてのガイドを配布"
+        ]
+      }
+    }
+  }
+};
+
+var PRACTICES = [
+  { id:1, category:"motivation", title:"週間MVPボード", target:"全学年共通", problem:"クラス全体のモチベーションが低い", description:"毎週金曜のSHRで「今週のMVP」をクラス投票で選出。学習・部活・生活態度など多角的な観点で評価し、教室のボードに掲示する。", steps:["投票カテゴリを5つ程度設定（学習努力賞・助け合い賞・改善賞など）","金曜SHRで無記名投票（1分で完了するフォーマットを準備）","得票数上位者をボードに掲載。担任からの一言コメントを添える","月間MVPは学級通信でも紹介"], effect:"承認欲求の充足により自己肯定感が向上。「見てもらえている」感覚がクラスの一体感を生む。", kpiLink:"クラス満足度調査のスコア向上、自主的な行動の増加" },
+  { id:2, category:"discipline", title:"遅刻ゼロチャレンジ", target:"全学年共通", problem:"遅刻が慢性化している", description:"クラス全体で「連続遅刻ゼロ日数」をカウントし、記録更新を目指すチャレンジ制度。", steps:["教室前方に大きなカウンターボードを設置","遅刻ゼロの日は数字を+1。遅刻があった日はリセット","10日連続・20日連続などの節目で小さなご褒美（担任からのメッセージカード等）","遅刻した生徒を責めるのではなく「明日からまた一緒に頑張ろう」の声かけを徹底"], effect:"ゲーミフィケーションの効果でクラス全体が時間意識を持つ。個人攻撃ではなくチーム目標にすることで心理的安全性を維持。", kpiLink:"月間遅刻率、連続遅刻ゼロ日数の最長記録" },
+  { id:3, category:"academic", title:"教え合いタイム（ピアティーチング）", target:"全学年共通", problem:"学力格差が大きく、下位層のフォローが追いつかない", description:"定期考査前の1週間、SHRの10分間を使って得意科目の生徒が他の生徒に教える時間を設ける。", steps:["得意科目アンケートを実施し「ミニ先生」を登録","質問したい生徒が「ミニ先生」のところに行く自由形式","教えた内容と教わった内容を各自記録シートに記入","考査後に「教え合い効果分析」として成績変化を確認"], effect:"教える側は知識が定着し、教わる側は質問しやすい環境で理解が深まる。学力向上と人間関係構築の一石二鳥。", kpiLink:"定期考査のクラス平均点、最低点の底上げ幅" },
+  { id:4, category:"career", title:"進路ビジョンマップ", target:"2年生〜", problem:"進路意識が薄く、将来像が描けていない", description:"A3用紙に「10年後の自分」を中心に置き、そこに至る道筋を逆算して可視化するワーク。", steps:["理想の10年後を自由に記述（仕事・生活・趣味など）","そこに至るために必要な5年後・3年後・1年後のステップを逆算","今すぐ始められるアクションを3つ書き出す","ペアで共有→クラスで発表（希望者）→教室掲示"], effect:"長期目標から逆算する思考法が身につく。抽象的な「将来」を具体的な行動に落とし込める。", kpiLink:"志望校・希望職種の決定率、進路に関する面談での具体性評価" },
+  { id:5, category:"parent", title:"保護者共有ダッシュボード", target:"全学年共通", problem:"保護者面談で数値的根拠を示しにくい", description:"クラスのKPIを月次でまとめた「学級ダッシュボード」を保護者向けに配布する仕組み。", steps:["出席率・平均点・学習時間・資格取得状況などの主要KPIを選定","月末に担任がデータを集計（Excel テンプレートを用意）","クラス全体の傾向と個人の位置を匿名グラフで表現","保護者通信に添付 or 保護者面談の資料として活用"], effect:"データに基づく面談で保護者の信頼度が向上。「先生はうちの子をしっかり見てくれている」感を醸成。", kpiLink:"保護者面談の満足度、保護者アンケートの信頼度スコア" },
+  { id:6, category:"team", title:"学級委員会のスプリント運営", target:"全学年共通", problem:"学級活動がマンネリ化している", description:"企業のアジャイル手法を参考に、学級委員会を2週間単位の「スプリント」で運営する。", steps:["2週間ごとに学級課題を1つ設定（例：教室の整理整頓）","学級委員がチームを編成し、具体的なアクションプランを策定","2週間後に成果を発表し、クラス全体で振り返り（KPT法）","次のスプリントの課題を投票で決定"], effect:"短いサイクルで成果が見えるため達成感を得やすい。PDCAサイクルを体験的に学べる。", kpiLink:"スプリント目標の達成率、学級満足度の推移" },
+  { id:7, category:"motivation", title:"成長グラフの個人カルテ", target:"全学年共通", problem:"生徒が自分の成長を実感できない", description:"各生徒に「成長カルテ」を配布し、成績・生活・資格などの推移を自分でグラフ化する取り組み。", steps:["A4見開きの成長カルテ（テンプレート）を年度初めに配布","定期考査・模試・資格試験のたびに自分でデータを記入","面談時に一緒にグラフを見ながら「伸びたポイント」を言語化","年度末に1年間の成長を振り返るレポートを作成"], effect:"自分の成長を数値で確認でき、内発的動機づけが強化される。面談での対話も深まる。", kpiLink:"自己効力感アンケートのスコア、面談の充実度" },
+  { id:8, category:"discipline", title:"朝のルーティン5分チェック", target:"1年生（習慣形成期）", problem:"朝のSHRが落ち着かない、準備が遅い", description:"SHR開始5分前から「朝ルーティンチェックリスト」に取り組む仕組みで、1日の良いスタートを切る。", steps:["チェックリスト項目を5つ設定（荷物整理・提出物確認・今日の目標記入・連絡事項確認・深呼吸）","SHR開始のチャイムが鳴った時点で全員着席・チェック完了を目標","週間達成率をクラスで集計。90%以上の週は「グッドスタート週」認定","月末に振り返り、チェック項目を生徒の提案でアップデート"], effect:"朝の時間の使い方が整うことで1日全体の生活リズムが改善。自律性の第一歩。", kpiLink:"SHR開始時の全員着席率、1時限目の授業態度評価" },
+  { id:9, category:"academic", title:"定期考査リフレクションシート", target:"全学年共通", problem:"テストの振り返りをせず同じ失敗を繰り返す", description:"考査返却後に全科目の「リフレクションシート」を記入し、次回の学習計画に反映する仕組み。", steps:["考査返却日にリフレクションシートを配布（各科目10分で完了する設計）","記入項目：目標点 vs 実際の点数 / できた問題の分析 / 間違えた原因分類 / 次回の具体的対策","間違いの原因を「ケアレスミス」「理解不足」「未学習」に分類させる","次回考査前にシートを見返す時間をSHRで確保"], effect:"メタ認知能力が向上し、「なぜ間違えたか」を自分で分析する習慣がつく。", kpiLink:"同一分野のミス再発率、次回考査での改善幅" },
+  { id:10, category:"career", title:"社会人メンター制度", target:"2〜3年生", problem:"進路選択が現実的でない、働くイメージが湧かない", description:"地域の社会人ボランティアと生徒をマッチングし、月1回のオンライン面談を行う制度。", steps:["PTA・同窓会・地域企業に協力を依頼しメンター候補を確保（5〜10名）","生徒の希望職種とメンターの職種をマッチング","月1回×20分のオンライン面談を実施（昼休み or 放課後）","面談後に気づきシートを提出。学期末にメンターへ感謝状"], effect:"大人との1対1の対話で職業観が深まる。「なぜその仕事を選んだか」のリアルな話が進路選択の助けになる。", kpiLink:"進路決定までの期間短縮、進路満足度アンケートの向上" },
+  { id:11, category:"parent", title:"三者面談の事前アンケート", target:"全学年共通", problem:"三者面談が形式的になり深い対話ができない", description:"面談の1週間前に生徒・保護者それぞれにアンケートを実施し、論点を事前に明確にする。", steps:["生徒用アンケート：自己評価・困っていること・担任に相談したいこと","保護者用アンケート：家庭での様子・心配事・学校に期待すること","担任が事前に回答を読み込み、面談のアジェンダを作成","面談後にフォローアップメモを生徒に渡す（決まったこと・次のアクション）"], effect:"限られた面談時間を最大限活用できる。事前にお互いの考えを把握しているので対話が深まる。", kpiLink:"面談満足度アンケート、面談後のアクション実行率" },
+  { id:12, category:"team", title:"班活動ローテーション制", target:"全学年共通", problem:"クラス内の人間関係が固定化し、孤立する生徒がいる", description:"月ごとに班のメンバーをシャッフルし、多様な人間関係を経験させる仕組み。", steps:["月初に班替えを実施（くじ引き or 担任による配慮あり編成）","各班に1つの「班ミッション」を設定（清掃・行事準備・学習相互チェック等）","月末に班ごとの振り返りと相互評価を実施","年度末に「ベスト班メンバー」を匿名投票で決定"], effect:"固定的な人間関係を流動化させ、多様な相手と協働する力を養う。孤立防止の効果も大きい。", kpiLink:"学級満足度調査の人間関係スコア、孤立傾向生徒の数" }
+];
+
+var ANALYSIS_KEYWORDS = {
+  motivation: { keywords: ["モチベーション","やる気","意欲","無気力","中だるみ","だるい","目標がない","何のために","興味がない","やらされ感","受動的","主体性"], label: "モチベーション管理" },
+  attendance: { keywords: ["遅刻","欠席","不登校","休みがち","出席率","登校しぶり","朝起きられない","生活リズム","サボり","早退"], label: "出席・生活リズム管理" },
+  academic: { keywords: ["成績","偏差値","模試","点数","学力","テスト","考査","勉強しない","学習時間","宿題","課題未提出","赤点","落第","補習","学力差","格差"], label: "学習成績管理" },
+  career: { keywords: ["進路","志望校","就職","将来","面接","履歴書","内定","進学","受験","入試","オープンキャンパス","インターンシップ","資格","検定"], label: "進路指導" },
+  relationship: { keywords: ["人間関係","いじめ","トラブル","孤立","グループ","仲間外れ","喧嘩","SNS","LINE","クラスの雰囲気","まとまらない","仲が悪い","対立"], label: "人間関係・学級風土" },
+  parent: { keywords: ["保護者","面談","クレーム","連携","家庭","親","理解","協力","通信","PTA"], label: "保護者連携" },
+  discipline: { keywords: ["規律","マナー","服装","校則","スマホ","携帯","私語","授業態度","立ち歩き","騒がしい","ルール"], label: "生活指導・規律" }
+};
+
+var SUGGESTION_TEMPLATES = {
+  motivation: {
+    kpis: [
+      { name: "自主学習取り組み率", measurement: "週間の自主学習記録カード提出率", target: "80%以上" },
+      { name: "目標設定・達成率", measurement: "月間個人目標の達成度", target: "60%以上が目標達成" },
+      { name: "クラス活動参加率", measurement: "行事・委員会への積極的参加", target: "全員が1つ以上の役割を担当" }
+    ],
+    methods: [
+      { name: "週間MVPボード", desc: "多角的な観点で毎週の頑張りを評価し、教室に掲示して承認する" },
+      { name: "成長カルテの導入", desc: "個人の成長を数値で可視化し、小さな進歩を実感させる" },
+      { name: "短期ゴール設定ワーク", desc: "2週間単位の達成可能な目標を設定し、成功体験を積ませる" }
+    ]
+  },
+  attendance: {
+    kpis: [
+      { name: "月間出席率", measurement: "出席日数 / 授業日数 × 100", target: "97%以上" },
+      { name: "遅刻ゼロ連続日数", measurement: "クラス全体で遅刻ゼロの連続日数", target: "最長記録の更新" },
+      { name: "早期対応率", measurement: "3日連続欠席への48時間以内対応率", target: "100%" }
+    ],
+    methods: [
+      { name: "遅刻ゼロチャレンジ", desc: "ゲーミフィケーションで遅刻防止をクラス全体の目標にする" },
+      { name: "朝ルーティンチェック", desc: "SHR前の5分間チェックリストで1日の良いスタートを促す" },
+      { name: "個別生活リズム面談", desc: "遅刻常習者には生活全体を見渡した面談を実施し根本原因に対処" }
+    ]
+  },
+  academic: {
+    kpis: [
+      { name: "定期考査平均点推移", measurement: "クラス平均および個人の推移", target: "前回比+3点以上" },
+      { name: "課題提出率", measurement: "各教科の課題提出率", target: "95%以上" },
+      { name: "家庭学習時間", measurement: "週間平均の自主学習時間", target: "学年目標時間以上の割合70%" },
+      { name: "小テスト合格率", measurement: "各教科の小テスト合格者割合", target: "80%以上" }
+    ],
+    methods: [
+      { name: "ピアティーチング", desc: "得意科目の生徒が他の生徒に教える教え合いの時間を設ける" },
+      { name: "リフレクションシート", desc: "考査ごとに振り返りシートを記入し、間違いの原因分析と改善策を明文化" },
+      { name: "学習計画ウィークリーレビュー", desc: "毎週金曜に学習計画の実行率を自己評価し、翌週の計画を修正" }
+    ]
+  },
+  career: {
+    kpis: [
+      { name: "進路希望明確化率", measurement: "第1志望が決まっている生徒の割合", target: "学期末に80%" },
+      { name: "進路関連活動参加率", measurement: "OC・見学・インターンシップ等への参加率", target: "1人年間3件以上" },
+      { name: "進路満足度", measurement: "進路選択に対する納得度アンケート", target: "4段階中3以上の割合80%" }
+    ],
+    methods: [
+      { name: "進路ビジョンマップ", desc: "10年後から逆算して今やるべきことを可視化するワークを実施" },
+      { name: "社会人メンター制度", desc: "地域の社会人と月1回の対話を通じて職業観を深める" },
+      { name: "進路リサーチタイム", desc: "月1回の調べ学習時間を設定し、クラスメイトと情報を共有する" }
+    ]
+  },
+  relationship: {
+    kpis: [
+      { name: "学級満足度（Q-U等）", measurement: "学級満足度尺度のスコア", target: "「満足群」70%以上" },
+      { name: "相談件数", measurement: "担任・SC への相談件数の推移", target: "相談しやすい環境=件数増加を肯定的に評価" },
+      { name: "孤立傾向生徒数", measurement: "社会性測定（ソシオメトリー）での被選択数ゼロの生徒数", target: "0人" }
+    ],
+    methods: [
+      { name: "班ローテーション制", desc: "月ごとに班編成を変え、多様な人間関係を経験させる" },
+      { name: "構成的グループエンカウンター（SGE）", desc: "ワークを通じて相互理解と自己開示を促進する" },
+      { name: "いじめ匿名アンケート", desc: "月次の匿名アンケートで早期発見・早期対応を徹底する" }
+    ]
+  },
+  parent: {
+    kpis: [
+      { name: "保護者面談満足度", measurement: "面談後アンケートのスコア", target: "4段階中3.5以上" },
+      { name: "通信配布・閲覧率", measurement: "学級通信の保護者確認率", target: "90%以上" },
+      { name: "保護者連携案件の解決率", measurement: "保護者からの相談・要望への対応完了率", target: "100%を2週間以内に" }
+    ],
+    methods: [
+      { name: "保護者共有ダッシュボード", desc: "月次のKPIまとめを配布し、データに基づく面談を実施" },
+      { name: "三者面談の事前アンケート", desc: "事前に論点を明確にし、限られた面談時間を最大限活用" },
+      { name: "ポジティブ連絡の習慣化", desc: "問題時だけでなく良い報告も電話で伝え、信頼関係を構築" }
+    ]
+  },
+  discipline: {
+    kpis: [
+      { name: "マナーチェック合格率", measurement: "月次のマナーチェックリスト評価", target: "全員合格" },
+      { name: "指導件数の推移", measurement: "月間の生活指導件数", target: "前月比減少" },
+      { name: "授業態度評価", measurement: "教科担任からの授業態度フィードバック", target: "「良好」評価80%以上" }
+    ],
+    methods: [
+      { name: "ルールのクラス自治化", desc: "校則の意味をディスカッションし、クラス独自のルールを自分たちで決める" },
+      { name: "ポジティブ行動支援（PBS）", desc: "問題行動の指摘より、望ましい行動の承認を増やすアプローチ" },
+      { name: "段階的指導プロトコル", desc: "声かけ→面談→保護者連携→専門家連携の段階を明文化し、一貫した対応を行う" }
+    ]
+  }
+};
+
+// =============================================================
+// アプリケーションロジック
+// =============================================================
+document.addEventListener("DOMContentLoaded", function() {
+  initGoalTabs();
+  initAnalyzer();
+  initPractices();
+  initNavigation();
+  renderKPIs("university");
+  renderPractices("all");
+});
+
+function initNavigation() {
+  var navLinks = document.querySelectorAll(".nav-link");
+  navLinks.forEach(function(link) {
+    link.addEventListener("click", function(e) {
+      e.preventDefault();
+      navLinks.forEach(function(l) { l.classList.remove("active"); });
+      link.classList.add("active");
+      var sectionId = link.dataset.section;
+      document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+    });
+  });
+
+  var sections = document.querySelectorAll(".section");
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        navLinks.forEach(function(l) { l.classList.remove("active"); });
+        var activeLink = document.querySelector('.nav-link[data-section="' + entry.target.id + '"]');
+        if (activeLink) activeLink.classList.add("active");
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(function(section) { observer.observe(section); });
+}
+
+function initGoalTabs() {
+  var tabs = document.querySelectorAll(".goal-tab");
+  tabs.forEach(function(tab) {
+    tab.addEventListener("click", function() {
+      tabs.forEach(function(t) { t.classList.remove("active"); });
+      tab.classList.add("active");
+      renderKPIs(tab.dataset.goal);
+    });
+  });
+}
+
+function renderKPIs(goal) {
+  var container = document.getElementById("kpi-display");
+  var data = KPI_DATA[goal];
+  if (!data) return;
+  var html = "";
+  [1, 2, 3].forEach(function(grade) {
+    var g = data.grades[grade];
+    html += '<div class="grade-block"><div class="grade-header"><h3 class="grade-title">' + g.title + '</h3><p class="grade-overview">' + g.overview + '</p></div><div class="kpi-cards">';
+    g.kpis.forEach(function(kpi, i) {
+      html += '<div class="kpi-card" style="animation-delay:' + (i * 0.05) + 's"><div class="kpi-card-header"><span class="kpi-number">' + (i+1) + '</span><h4 class="kpi-name">' + kpi.name + '</h4></div><div class="kpi-card-body"><div class="kpi-detail"><span class="kpi-label">目標値</span><span class="kpi-value target">' + kpi.target + '</span></div><div class="kpi-detail"><span class="kpi-label">測定方法</span><span class="kpi-value">' + kpi.how + '</span></div><div class="kpi-detail"><span class="kpi-label">頻度</span><span class="kpi-value freq">' + kpi.frequency + '</span></div></div></div>';
+    });
+    html += '</div><div class="management-tips"><h4 class="tips-title">マネジメントのポイント</h4><ul class="tips-list">';
+    g.management.forEach(function(tip) { html += '<li>' + tip + '</li>'; });
+    html += '</ul></div></div>';
+  });
+  container.innerHTML = html;
+}
+
+function initAnalyzer() {
+  document.getElementById("analyze-btn").addEventListener("click", analyzeAndSuggest);
+}
+
+function analyzeAndSuggest() {
+  var grade = document.getElementById("grade-select").value;
+  var goal = document.getElementById("goal-select").value;
+  var text = document.getElementById("situation-input").value.trim();
+  if (!text) { showResult('<div class="result-error">クラスの状況を入力してください。</div>'); return; }
+
+  var detectedCategories = analyzeText(text);
+  var gradeLabel = grade + "年生";
+  var goalLabels = { university:"大学受験", qualification:"資格試験", employment:"就職", mixed:"混合クラス" };
+
+  var html = '<div class="result-content"><div class="result-header"><h3>分析結果</h3><div class="result-meta"><span class="meta-badge">' + gradeLabel + '</span><span class="meta-badge">' + goalLabels[goal] + '</span></div></div><div class="detected-issues"><h4>検出された課題領域</h4><div class="issue-tags">';
+  detectedCategories.forEach(function(cat) { html += '<span class="issue-tag">' + ANALYSIS_KEYWORDS[cat].label + '</span>'; });
+  html += '</div></div>';
+
+  detectedCategories.forEach(function(cat) {
+    var s = SUGGESTION_TEMPLATES[cat];
+    if (!s) return;
+    html += '<div class="suggestion-block"><h4 class="suggestion-category">' + ANALYSIS_KEYWORDS[cat].label + '</h4><div class="suggestion-section"><h5>推奨KPI</h5><div class="suggested-kpis">';
+    s.kpis.forEach(function(kpi) {
+      html += '<div class="suggested-kpi"><div class="suggested-kpi-name">' + kpi.name + '</div><div class="suggested-kpi-detail"><span class="skpi-label">測定方法:</span> ' + kpi.measurement + '</div><div class="suggested-kpi-detail"><span class="skpi-label">目標:</span> <strong>' + kpi.target + '</strong></div></div>';
+    });
+    html += '</div></div><div class="suggestion-section"><h5>推奨マネジメント手法</h5><div class="suggested-methods">';
+    s.methods.forEach(function(m) {
+      html += '<div class="suggested-method"><div class="suggested-method-name">' + m.name + '</div><div class="suggested-method-desc">' + m.desc + '</div></div>';
+    });
+    html += '</div></div></div>';
+  });
+
+  if (goal !== "mixed" && KPI_DATA[goal]) {
+    var goalData = KPI_DATA[goal].grades[grade];
+    if (goalData) {
+      html += '<div class="suggestion-block goal-suggestion"><h4 class="suggestion-category">' + goalLabels[goal] + '向け ― ' + gradeLabel + 'の重点KPI</h4><div class="suggested-kpis">';
+      goalData.kpis.slice(0,3).forEach(function(kpi) {
+        html += '<div class="suggested-kpi"><div class="suggested-kpi-name">' + kpi.name + '</div><div class="suggested-kpi-detail"><span class="skpi-label">目標:</span> <strong>' + kpi.target + '</strong></div><div class="suggested-kpi-detail"><span class="skpi-label">方法:</span> ' + kpi.how + '</div></div>';
+      });
+      html += '</div></div>';
+    }
+  }
+
+  html += '<div class="overall-advice"><h4>総合アドバイス</h4><p>' + generateOverallAdvice(detectedCategories, grade, goal) + '</p></div></div>';
+  showResult(html);
+}
+
+function analyzeText(text) {
+  var scores = {};
+  Object.keys(ANALYSIS_KEYWORDS).forEach(function(category) {
+    var data = ANALYSIS_KEYWORDS[category];
+    var score = 0;
+    data.keywords.forEach(function(keyword) {
+      var regex = new RegExp(keyword, "gi");
+      var matches = text.match(regex);
+      if (matches) score += matches.length;
+    });
+    if (score > 0) scores[category] = score;
+  });
+  var sorted = Object.keys(scores).sort(function(a,b) { return scores[b] - scores[a]; });
+  if (sorted.length === 0) return ["motivation", "academic"];
+  return sorted.slice(0, 4);
+}
+
+function generateOverallAdvice(categories, grade, goal) {
+  var parts = [];
+  if (grade === "1") parts.push("1年生は学校生活への適応と基本的な習慣形成が最優先です。KPIを欲張りすぎず、まずは出席率と基礎学力の2本柱に集中することをお勧めします。");
+  else if (grade === "2") parts.push("2年生は中だるみ対策と将来の方向性の明確化が重要な時期です。生徒が自分で目標を設定し、自分で進捗を管理する仕組みを段階的に導入しましょう。");
+  else parts.push("3年生は目標達成に向けた実践と精神面のサポートのバランスが鍵です。個別対応の頻度を上げつつ、クラス全体の支え合いの文化も大切にしましょう。");
+  if (categories.indexOf("motivation") !== -1 && categories.indexOf("academic") !== -1) parts.push("モチベーションと学力の課題が同時に見られます。成績向上を直接求めるより、小さな成功体験の積み重ねでまず意欲を回復させるアプローチが効果的です。");
+  if (categories.indexOf("attendance") !== -1) parts.push("出席に課題がある場合は、表面的な指導だけでなく生活リズム全体を見渡した支援が必要です。必要に応じてスクールカウンセラーとの連携も検討してください。");
+  if (categories.indexOf("relationship") !== -1) parts.push("人間関係の課題はKPIだけでは測りにくい領域です。定期的な学級満足度調査（Q-U等）と日常の観察を組み合わせ、早期発見・早期対応を心がけましょう。");
+  parts.push("KPIは「管理するための数字」ではなく「生徒の成長を支えるための指標」です。数値目標を生徒と一緒に決め、達成のプロセスを一緒に振り返ることで、自律的な成長を促しましょう。");
+  return parts.join("<br><br>");
+}
+
+function showResult(html) {
+  var container = document.getElementById("analyzer-result");
+  container.innerHTML = html;
+  container.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function initPractices() {
+  var filterBtns = document.querySelectorAll(".filter-btn");
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      filterBtns.forEach(function(b) { b.classList.remove("active"); });
+      btn.classList.add("active");
+      renderPractices(btn.dataset.category);
+    });
+  });
+}
+
+function renderPractices(category) {
+  var container = document.getElementById("practices-display");
+  var filtered = category === "all" ? PRACTICES : PRACTICES.filter(function(p) { return p.category === category; });
+  var categoryLabels = { motivation:"モチベーション", discipline:"生活指導", academic:"学習管理", career:"進路指導", parent:"保護者連携", team:"学級組織" };
+  var html = "";
+  filtered.forEach(function(practice, i) {
+    html += '<div class="practice-card" style="animation-delay:' + (i*0.05) + 's"><div class="practice-card-top"><span class="practice-category-badge">' + (categoryLabels[practice.category] || practice.category) + '</span><span class="practice-target">' + practice.target + '</span></div><h3 class="practice-title">' + practice.title + '</h3><p class="practice-problem"><strong>こんな課題に:</strong> ' + practice.problem + '</p><p class="practice-desc">' + practice.description + '</p><details class="practice-details"><summary>実施手順・効果を見る</summary><div class="practice-steps"><h5>実施手順</h5><ol>';
+    practice.steps.forEach(function(step) { html += '<li>' + step + '</li>'; });
+    html += '</ol></div><div class="practice-effect"><h5>期待される効果</h5><p>' + practice.effect + '</p></div><div class="practice-kpi-link"><h5>関連KPI</h5><p>' + practice.kpiLink + '</p></div></details></div>';
+  });
+  if (filtered.length === 0) html = '<p class="no-results">該当する事例がありません。</p>';
+  container.innerHTML = html;
+}
+  </script>
+</body>
+</html>
