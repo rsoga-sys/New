@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpeakQuest - 発音チェッカー</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header id="header">
+      <div class="header-left">
+        <h1 class="logo">SpeakQuest</h1>
+        <span class="tagline">発音マスターへの道</span>
+      </div>
+      <div class="header-right">
+        <div class="streak-badge" id="streakBadge" title="連続練習日数">
+          <span class="streak-icon">&#x1f525;</span>
+          <span id="streakCount">0</span>日
+        </div>
+        <div class="level-badge" id="levelBadge">
+          <div class="level-icon">Lv.</div>
+          <span id="levelNum">1</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- XP Bar -->
+    <div class="xp-bar-container">
+      <div class="xp-info">
+        <span id="xpText">0 / 100 XP</span>
+        <span id="levelTitle" class="level-title">ビギナー</span>
+      </div>
+      <div class="xp-bar">
+        <div class="xp-fill" id="xpFill" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="practice">練習</button>
+      <button class="tab" data-tab="history">履歴</button>
+      <button class="tab" data-tab="achievements">実績</button>
+      <button class="tab" data-tab="stats">統計</button>
+    </nav>
+
+    <!-- Practice Tab -->
+    <section id="practiceTab" class="tab-content active">
+      <!-- Language Selection -->
+      <div class="card language-select">
+        <label for="langSelect">言語:</label>
+        <select id="langSelect">
+          <option value="en-US">英語 (US)</option>
+          <option value="en-GB">英語 (UK)</option>
+          <option value="ja-JP">日本語</option>
+          <option value="zh-CN">中国語 (簡体字)</option>
+          <option value="ko-KR">韓国語</option>
+          <option value="fr-FR">フランス語</option>
+          <option value="de-DE">ドイツ語</option>
+          <option value="es-ES">スペイン語</option>
+        </select>
+      </div>
+
+      <!-- Text Input -->
+      <div class="card input-section">
+        <h2>発音したい文章を入力</h2>
+        <textarea id="targetText" placeholder="ここに発音したい文章を入力してください..." rows="3"></textarea>
+        <div class="sample-sentences">
+          <span class="sample-label">例文:</span>
+          <button class="sample-btn" data-text="The quick brown fox jumps over the lazy dog.">基本文</button>
+          <button class="sample-btn" data-text="She sells seashells by the seashore.">早口言葉</button>
+          <button class="sample-btn" data-text="How much wood would a woodchuck chuck if a woodchuck could chuck wood?">チャレンジ</button>
+        </div>
+      </div>
+
+      <!-- Recording Section -->
+      <div class="card recording-section">
+        <div class="mic-container">
+          <button id="recordBtn" class="record-btn" disabled>
+            <svg class="mic-icon" viewBox="0 0 24 24" width="48" height="48">
+              <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="currentColor"/>
+              <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="currentColor"/>
+            </svg>
+          </button>
+          <div class="pulse-ring" id="pulseRing"></div>
+        </div>
+        <p id="recordStatus" class="record-status">文章を入力してください</p>
+        <div class="recognized-text" id="recognizedContainer" style="display:none;">
+          <h3>認識された音声:</h3>
+          <p id="recognizedText"></p>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div class="card results-section" id="resultsSection" style="display:none;">
+        <h2>分析結果</h2>
+
+        <!-- Score Circle -->
+        <div class="score-container">
+          <div class="score-circle" id="scoreCircle">
+            <svg viewBox="0 0 120 120">
+              <circle class="score-bg" cx="60" cy="60" r="54" />
+              <circle class="score-fill" id="scoreFill" cx="60" cy="60" r="54" />
+            </svg>
+            <div class="score-text">
+              <span class="score-number" id="scoreNumber">0</span>
+              <span class="score-percent">%</span>
+            </div>
+          </div>
+          <div class="score-label" id="scoreLabel">--</div>
+        </div>
+
+        <!-- XP Gained -->
+        <div class="xp-gained" id="xpGained" style="display:none;">
+          <span class="xp-gained-text">+<span id="xpGainedAmount">0</span> XP</span>
+        </div>
+
+        <!-- Word-by-word Analysis -->
+        <div class="word-analysis">
+          <h3>単語別分析</h3>
+          <div id="wordAnalysis" class="word-grid"></div>
+        </div>
+
+        <!-- Feedback -->
+        <div class="feedback" id="feedback"></div>
+
+        <!-- Retry Button -->
+        <div class="action-buttons">
+          <button id="retryBtn" class="btn btn-primary">もう一度チャレンジ</button>
+          <button id="newTextBtn" class="btn btn-secondary">新しい文章</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- History Tab -->
+    <section id="historyTab" class="tab-content">
+      <div class="card">
+        <div class="history-header">
+          <h2>練習履歴</h2>
+          <button id="clearHistoryBtn" class="btn btn-small btn-danger">全削除</button>
+        </div>
+        <div id="historyList" class="history-list">
+          <p class="empty-message">まだ練習履歴がありません</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Achievements Tab -->
+    <section id="achievementsTab" class="tab-content">
+      <div class="card">
+        <h2>実績</h2>
+        <div id="achievementsList" class="achievements-grid"></div>
+      </div>
+    </section>
+
+    <!-- Stats Tab -->
+    <section id="statsTab" class="tab-content">
+      <div class="card">
+        <h2>統計データ</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="totalPractices">0</div>
+            <div class="stat-label">総練習回数</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="avgScore">0%</div>
+            <div class="stat-label">平均スコア</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="bestScore">0%</div>
+            <div class="stat-label">最高スコア</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="totalXp">0</div>
+            <div class="stat-label">総獲得XP</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="maxStreak">0日</div>
+            <div class="stat-label">最長連続記録</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="perfectCount">0</div>
+            <div class="stat-label">パーフェクト回数</div>
+          </div>
+        </div>
+        <div class="score-distribution">
+          <h3>スコア分布</h3>
+          <div id="scoreChart" class="score-chart"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Level Up Modal -->
+    <div class="modal-overlay" id="levelUpModal" style="display:none;">
+      <div class="modal level-up-modal">
+        <div class="confetti" id="confetti"></div>
+        <h2>レベルアップ!</h2>
+        <div class="new-level" id="newLevelDisplay">Lv. 2</div>
+        <div class="new-title" id="newTitleDisplay">ルーキー</div>
+        <button class="btn btn-primary" id="closeLevelUp">OK</button>
+      </div>
+    </div>
+
+    <!-- Achievement Unlock Modal -->
+    <div class="modal-overlay" id="achievementModal" style="display:none;">
+      <div class="modal achievement-modal">
+        <h2>実績解除!</h2>
+        <div class="achievement-icon" id="achievementIcon"></div>
+        <div class="achievement-name" id="achievementName"></div>
+        <div class="achievement-desc" id="achievementDesc"></div>
+        <button class="btn btn-primary" id="closeAchievement">OK</button>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
