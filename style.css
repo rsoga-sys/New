@@ -1,27 +1,29 @@
 /* ===== CSS Variables & Reset ===== */
 :root {
-  --primary: #6C5CE7;
-  --primary-light: #A29BFE;
-  --primary-dark: #5A4BD1;
-  --accent: #00CEC9;
-  --accent-light: #81ECEC;
-  --success: #00B894;
-  --warning: #FDCB6E;
-  --danger: #E17055;
-  --bg: #0F0F1A;
-  --bg-card: #1A1A2E;
-  --bg-card-hover: #222240;
-  --text: #EAEAEA;
-  --text-muted: #8888AA;
-  --border: #2A2A4A;
-  --xp-bar: #FFD93D;
-  --perfect: #FFD700;
-  --great: #00B894;
-  --good: #6C5CE7;
-  --ok: #FDCB6E;
-  --poor: #E17055;
+  --primary: #2563EB;
+  --primary-light: #60A5FA;
+  --primary-dark: #1D4ED8;
+  --accent: #3B82F6;
+  --accent-light: #93C5FD;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --bg: #F0F4F8;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F8FAFC;
+  --text: #1E293B;
+  --text-muted: #64748B;
+  --border: #CBD5E1;
+  --border-light: #E2E8F0;
+  --xp-bar: #2563EB;
+  --perfect: #F59E0B;
+  --great: #10B981;
+  --good: #3B82F6;
+  --ok: #F59E0B;
+  --poor: #EF4444;
   --radius: 12px;
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -59,17 +61,19 @@ body {
 }
 
 .logo {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 800;
-  background: linear-gradient(135deg, var(--primary-light), var(--accent));
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
 }
 
 .tagline {
   font-size: 0.75rem;
   color: var(--text-muted);
+  font-weight: 500;
 }
 
 .header-right {
@@ -82,12 +86,13 @@ body {
   display: flex;
   align-items: center;
   gap: 4px;
-  background: linear-gradient(135deg, #e74c3c22, #e67e2222);
-  border: 1px solid #e74c3c44;
+  background: #FFF7ED;
+  border: 1px solid #FED7AA;
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 600;
+  color: #EA580C;
 }
 
 .streak-icon {
@@ -103,12 +108,13 @@ body {
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 700;
-  box-shadow: 0 2px 10px rgba(108, 92, 231, 0.3);
+  color: white;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
 }
 
 .level-icon {
   font-size: 0.7rem;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 /* ===== XP Bar ===== */
@@ -125,20 +131,20 @@ body {
 }
 
 .level-title {
-  color: var(--xp-bar);
+  color: var(--primary);
   font-weight: 600;
 }
 
 .xp-bar {
   height: 6px;
-  background: var(--border);
+  background: var(--border-light);
   border-radius: 3px;
   overflow: hidden;
 }
 
 .xp-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--xp-bar), #FF6B6B);
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
   border-radius: 3px;
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -151,6 +157,8 @@ body {
   background: var(--bg-card);
   border-radius: var(--radius);
   padding: 4px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow);
 }
 
 .tab {
@@ -169,12 +177,12 @@ body {
 .tab.active {
   background: var(--primary);
   color: white;
-  box-shadow: 0 2px 8px rgba(108, 92, 231, 0.4);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
 }
 
 .tab:hover:not(.active) {
   color: var(--text);
-  background: var(--bg-card-hover);
+  background: var(--bg);
 }
 
 .tab-content {
@@ -188,7 +196,7 @@ body {
 /* ===== Cards ===== */
 .card {
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-light);
   border-radius: var(--radius);
   padding: 20px;
   margin-bottom: 16px;
@@ -213,6 +221,7 @@ body {
   font-weight: 600;
   font-size: 0.9rem;
   white-space: nowrap;
+  color: var(--text);
 }
 
 .language-select select {
@@ -229,6 +238,7 @@ body {
 .language-select select:focus {
   outline: none;
   border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 /* ===== Input Section ===== */
@@ -236,22 +246,70 @@ textarea {
   width: 100%;
   background: var(--bg);
   color: var(--text);
-  border: 2px solid var(--border);
+  border: 2px solid var(--border-light);
   border-radius: 8px;
   padding: 14px;
   font-size: 1rem;
   font-family: inherit;
   resize: vertical;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 textarea:focus {
   outline: none;
   border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 textarea::placeholder {
   color: var(--text-muted);
+}
+
+/* ===== Model Audio Button ===== */
+.model-audio-section {
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+.btn-model {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid var(--primary);
+  background: rgba(37, 99, 235, 0.06);
+  color: var(--primary);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-model:hover:not(:disabled) {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.btn-model:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-model.playing {
+  background: var(--primary);
+  color: white;
+  animation: pulse-model 1.5s infinite;
+}
+
+@keyframes pulse-model {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+}
+
+.speaker-icon {
+  flex-shrink: 0;
 }
 
 .sample-sentences {
@@ -271,11 +329,12 @@ textarea::placeholder {
   padding: 4px 12px;
   border: 1px solid var(--border);
   background: var(--bg);
-  color: var(--primary-light);
+  color: var(--primary);
   border-radius: 16px;
   font-size: 0.78rem;
   cursor: pointer;
   transition: all 0.2s;
+  font-weight: 500;
 }
 
 .sample-btn:hover {
@@ -300,8 +359,8 @@ textarea::placeholder {
   height: 88px;
   border-radius: 50%;
   border: 3px solid var(--primary);
-  background: linear-gradient(135deg, var(--bg-card), var(--bg));
-  color: var(--primary-light);
+  background: var(--bg-card);
+  color: var(--primary);
   cursor: pointer;
   transition: all 0.3s;
   position: relative;
@@ -309,13 +368,14 @@ textarea::placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: var(--shadow-md);
 }
 
 .record-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: white;
   transform: scale(1.05);
-  box-shadow: 0 0 30px rgba(108, 92, 231, 0.5);
+  box-shadow: 0 0 24px rgba(37, 99, 235, 0.35);
 }
 
 .record-btn:disabled {
@@ -324,15 +384,15 @@ textarea::placeholder {
 }
 
 .record-btn.recording {
-  background: linear-gradient(135deg, var(--danger), #c0392b);
+  background: linear-gradient(135deg, var(--danger), #DC2626);
   border-color: var(--danger);
   color: white;
   animation: pulse-btn 1.5s infinite;
 }
 
 @keyframes pulse-btn {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(225, 112, 85, 0.4); }
-  50% { box-shadow: 0 0 0 15px rgba(225, 112, 85, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
 }
 
 .pulse-ring {
@@ -350,6 +410,7 @@ textarea::placeholder {
 
 .pulse-ring.active {
   animation: pulse-ring 1.5s infinite;
+  border-color: var(--danger);
 }
 
 @keyframes pulse-ring {
@@ -369,6 +430,7 @@ textarea::placeholder {
   background: var(--bg);
   border-radius: 8px;
   padding: 14px;
+  border: 1px solid var(--border-light);
 }
 
 .recognized-text h3 {
@@ -379,7 +441,8 @@ textarea::placeholder {
 
 .recognized-text p {
   font-size: 1rem;
-  color: var(--accent-light);
+  color: var(--primary);
+  font-weight: 500;
 }
 
 /* ===== Results Section ===== */
@@ -410,7 +473,7 @@ textarea::placeholder {
 
 .score-bg {
   fill: none;
-  stroke: var(--border);
+  stroke: var(--border-light);
   stroke-width: 8;
 }
 
@@ -437,6 +500,7 @@ textarea::placeholder {
   font-size: 2.4rem;
   font-weight: 800;
   line-height: 1;
+  color: var(--text);
 }
 
 .score-percent {
@@ -465,7 +529,7 @@ textarea::placeholder {
 
 .xp-gained-text {
   display: inline-block;
-  background: linear-gradient(135deg, var(--xp-bar), #FF6B6B);
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -511,22 +575,100 @@ textarea::placeholder {
 }
 
 .word-correct {
-  background: rgba(0, 184, 148, 0.15);
+  background: rgba(16, 185, 129, 0.1);
   color: var(--success);
-  border: 1px solid rgba(0, 184, 148, 0.3);
+  border: 1px solid rgba(16, 185, 129, 0.25);
 }
 
 .word-incorrect {
-  background: rgba(225, 112, 85, 0.15);
+  background: rgba(239, 68, 68, 0.08);
   color: var(--danger);
-  border: 1px solid rgba(225, 112, 85, 0.3);
+  border: 1px solid rgba(239, 68, 68, 0.25);
   text-decoration: line-through;
 }
 
 .word-missing {
-  background: rgba(136, 136, 170, 0.1);
+  background: rgba(100, 116, 139, 0.08);
   color: var(--text-muted);
-  border: 1px dashed rgba(136, 136, 170, 0.3);
+  border: 1px dashed rgba(100, 116, 139, 0.3);
+}
+
+/* ===== Pronunciation Advice ===== */
+.pronunciation-advice {
+  text-align: left;
+  margin: 20px 0;
+  padding: 16px;
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: var(--radius);
+}
+
+.pronunciation-advice h3 {
+  font-size: 0.95rem;
+  color: var(--primary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pronunciation-advice h3::before {
+  content: '\1F4A1';
+}
+
+.advice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.advice-item {
+  background: white;
+  border-radius: 8px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--primary);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.advice-word {
+  font-weight: 700;
+  color: var(--danger);
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.advice-phonetic {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  font-style: italic;
+}
+
+.advice-tip {
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.advice-listen-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  padding: 3px 10px;
+  border: 1px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.advice-listen-btn:hover {
+  background: var(--primary);
+  color: white;
 }
 
 /* ===== Feedback ===== */
@@ -539,6 +681,7 @@ textarea::placeholder {
   font-size: 0.9rem;
   line-height: 1.7;
   color: var(--text-muted);
+  border: 1px solid var(--border-light);
 }
 
 .feedback strong {
@@ -559,12 +702,12 @@ textarea::placeholder {
 .btn-primary {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: white;
-  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(108, 92, 231, 0.5);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
 }
 
 .btn-secondary {
@@ -624,10 +767,12 @@ textarea::placeholder {
   align-items: center;
   transition: background 0.2s;
   cursor: pointer;
+  border: 1px solid var(--border-light);
 }
 
 .history-item:hover {
   background: var(--bg-card-hover);
+  border-color: var(--primary-light);
 }
 
 .history-left {
@@ -641,6 +786,7 @@ textarea::placeholder {
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 4px;
+  color: var(--text);
 }
 
 .history-meta {
@@ -676,12 +822,12 @@ textarea::placeholder {
   padding: 16px;
   text-align: center;
   transition: all 0.3s;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-light);
 }
 
 .achievement-card.unlocked {
-  border-color: var(--xp-bar);
-  background: linear-gradient(135deg, rgba(255, 217, 61, 0.05), rgba(255, 107, 107, 0.05));
+  border-color: var(--primary-light);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.04), rgba(96, 165, 250, 0.06));
 }
 
 .achievement-card.locked {
@@ -698,6 +844,7 @@ textarea::placeholder {
   font-size: 0.8rem;
   font-weight: 600;
   margin-bottom: 4px;
+  color: var(--text);
 }
 
 .achievement-card .desc {
@@ -718,12 +865,13 @@ textarea::placeholder {
   border-radius: 8px;
   padding: 14px 10px;
   text-align: center;
+  border: 1px solid var(--border-light);
 }
 
 .stat-value {
   font-size: 1.4rem;
   font-weight: 800;
-  color: var(--primary-light);
+  color: var(--primary);
   margin-bottom: 4px;
 }
 
@@ -775,7 +923,8 @@ textarea::placeholder {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -790,7 +939,7 @@ textarea::placeholder {
 
 .modal {
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-light);
   border-radius: 16px;
   padding: 32px;
   text-align: center;
@@ -799,6 +948,7 @@ textarea::placeholder {
   position: relative;
   overflow: hidden;
   animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
 }
 
 @keyframes modalPop {
@@ -809,7 +959,7 @@ textarea::placeholder {
 .modal h2 {
   font-size: 1.3rem;
   margin-bottom: 16px;
-  background: linear-gradient(135deg, var(--xp-bar), #FF6B6B);
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -818,13 +968,13 @@ textarea::placeholder {
 .new-level {
   font-size: 3rem;
   font-weight: 900;
-  color: var(--primary-light);
+  color: var(--primary);
   margin: 10px 0;
 }
 
 .new-title {
   font-size: 1.1rem;
-  color: var(--xp-bar);
+  color: var(--primary-light);
   font-weight: 600;
   margin-bottom: 20px;
 }
@@ -838,6 +988,7 @@ textarea::placeholder {
   font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 6px;
+  color: var(--text);
 }
 
 .achievement-modal .achievement-desc {
@@ -852,12 +1003,12 @@ textarea::placeholder {
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%) translateY(100px);
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: var(--text);
+  color: white;
   padding: 12px 24px;
   border-radius: 8px;
   font-size: 0.9rem;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
   z-index: 2000;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
