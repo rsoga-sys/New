@@ -1,4 +1,4 @@
-// ===== SpeakQuest - Pronunciation Checker App =====
+// ===== English Communication - Pronunciation Practice App =====
 
 (function () {
   'use strict';
@@ -50,10 +50,107 @@
     '一つずつ確実に!',
   ];
 
+  // ===== Pronunciation Advice Database =====
+  const PRONUNCIATION_TIPS = {
+    'the': { phonetic: '/ðə/ or /ðiː/', tip: '舌先を上の前歯の裏に軽く当て、声を出しながら「ザ」と発音します。日本語の「ザ」とは異なり、舌と歯の間から空気を出す「th」の音を意識しましょう。' },
+    'this': { phonetic: '/ðɪs/', tip: '「th」は舌先を上の前歯に当てて振動させます。「ディス」ではなく、舌を噛むような感覚で発音しましょう。' },
+    'that': { phonetic: '/ðæt/', tip: '「th」の音に注意。舌先を歯の間に出して発音します。「ザット」ではありません。' },
+    'think': { phonetic: '/θɪŋk/', tip: '無声の「th」です。舌先を上の前歯に当て、息だけを出します。「シンク」ではなく、舌を歯に当てる感覚を意識しましょう。' },
+    'three': { phonetic: '/θriː/', tip: '「th」は舌先を歯に当てて息を出します。「スリー」ではなく、舌を使った「θ」の音を出しましょう。' },
+    'through': { phonetic: '/θruː/', tip: '「th」の無声音から始めます。舌先を歯に当ててから「ルー」に繋げます。' },
+    'with': { phonetic: '/wɪð/', tip: '最後の「th」は有声音です。舌先を歯の間に出して振動させます。' },
+    'world': { phonetic: '/wɜːrld/', tip: '「ワールド」ではなく、唇を丸めて「wɜːr」と発音し、舌を巻いて「ld」を付けます。「r」と「l」の区別が重要です。' },
+    'right': { phonetic: '/raɪt/', tip: '「r」は舌を口の奥に引いて丸め、どこにも触れずに発音します。「ライト」の「ラ」とは舌の位置が異なります。' },
+    'light': { phonetic: '/laɪt/', tip: '「l」は舌先を上の前歯の裏（歯茎）にしっかりつけて発音します。「r」と混同しないように注意しましょう。' },
+    'really': { phonetic: '/ˈriːəli/', tip: '最初の「r」は舌をどこにも触れずに発音します。日本語の「リ」とは異なる音です。' },
+    'very': { phonetic: '/ˈveri/', tip: '「v」は上の前歯で下唇を軽く噛んで振動させます。「ベリー」ではなく「ヴェリー」に近い音です。' },
+    'love': { phonetic: '/lʌv/', tip: '「v」は下唇に上の歯を当てて振動させます。「ラブ」ではなく、最後を「ヴ」で終えましょう。' },
+    'have': { phonetic: '/hæv/', tip: '最後の「v」は下唇を上の歯に当てて声を出します。「ハブ」ではありません。' },
+    'of': { phonetic: '/ʌv/', tip: '「オブ」ではなく「アヴ」に近い発音です。「f」ではなく「v」の有声音で終わります。' },
+    'would': { phonetic: '/wʊd/', tip: '「l」は発音しません。「ウッド」のように唇を丸めて「wʊd」と発音します。' },
+    'could': { phonetic: '/kʊd/', tip: '「l」は発音しません。「クッド」のように発音します。' },
+    'should': { phonetic: '/ʃʊd/', tip: '「l」は発音しません。「シュッド」のように発音します。' },
+    'although': { phonetic: '/ɔːlˈðoʊ/', tip: '「th」は有声音です。舌先を歯の間に出して振動させ、「オール・ゾウ」のように発音します。' },
+    'woman': { phonetic: '/ˈwʊmən/', tip: '「ウーマン」ではなく「ウマン」に近い発音です。最初の母音は短い「ʊ」です。' },
+    'women': { phonetic: '/ˈwɪmɪn/', tip: '「ウィメン」ではなく「ウィミン」に近い発音です。「o」を「ɪ」と発音するのが特徴です。' },
+    'comfortable': { phonetic: '/ˈkʌmftəbl/', tip: '4音節ではなく3音節で発音します。「カンフタブル」のように「or」を省略した発音が自然です。' },
+    'vegetable': { phonetic: '/ˈvedʒtəbl/', tip: '4音節ではなく3音節で発音します。「ヴェジタブル」のように短縮して発音します。' },
+    'temperature': { phonetic: '/ˈtemprətʃər/', tip: '4音節ではなく3音節で発音します。「テンプラチャー」のように中間の母音を省略します。' },
+    'often': { phonetic: '/ˈɔːfn/', tip: '「t」は発音しない場合が多いです。「オーフン」のように発音します。' },
+    'asked': { phonetic: '/æskt/', tip: '3つの子音「skt」が続きます。「アスクト」ではなく、スムーズに「æskt」と繋げましょう。' },
+    'months': { phonetic: '/mʌnθs/', tip: '最後の「ths」は舌を歯に当てたまま「s」を加えます。難しい場合は「mʌnts」でも通じます。' },
+    'clothes': { phonetic: '/kloʊðz/', tip: '「クローゼス」ではなく「クロウズ」に近い1音節の発音です。' },
+    'island': { phonetic: '/ˈaɪlənd/', tip: '「s」は発音しません。「アイランド」と読みます。' },
+    'Wednesday': { phonetic: '/ˈwenzdeɪ/', tip: '「d」は発音しません。「ウェンズデイ」と発音します。' },
+    'February': { phonetic: '/ˈfebjueri/', tip: '最初の「r」は省略されることが多く、「フェビュエリ」のように発音します。' },
+    'library': { phonetic: '/ˈlaɪbreri/', tip: '「ライブラリー」ではなく「ライブレリー」に近い発音です。' },
+    'pronunciation': { phonetic: '/prəˌnʌnsiˈeɪʃn/', tip: '「プロナウンシエーション」ではなく「プロナンシエイション」です。「noun」ではなく「nun」の音に注意。' },
+    'comfortable': { phonetic: '/ˈkʌmftərbl/', tip: '「コンフォータブル」ではなく「カンフタブル」と3音節で発音します。' },
+    'interesting': { phonetic: '/ˈɪntrəstɪŋ/', tip: '4音節ではなく3音節で「イントゥレスティング」のように発音するのが自然です。' },
+    'different': { phonetic: '/ˈdɪfrənt/', tip: '3音節ではなく2音節で「ディフレント」のように発音するのが自然です。' },
+    'chocolate': { phonetic: '/ˈtʃɒklət/', tip: '3音節ではなく2音節で「チョクレット」のように発音します。' },
+    'business': { phonetic: '/ˈbɪznəs/', tip: '「ビジネス」ではなく「ビズネス」に近い2音節の発音です。' },
+    'schedule': { phonetic: '/ˈskedʒuːl/', tip: 'アメリカ英語では「スケジュール」、イギリス英語では「シェジュール」と発音します。' },
+    'particularly': { phonetic: '/pərˈtɪkjələrli/', tip: '音節が多いので、「パティキュラリー」のように中間の音を省略しがちですが、「r」の音を意識しましょう。' },
+    'literally': { phonetic: '/ˈlɪtərəli/', tip: '「リテラリー」のように4音節で発音します。「t」を軽い「d」のように発音するとより自然です。' },
+    'environment': { phonetic: '/ɪnˈvaɪrənmənt/', tip: '「エンバイロンメント」のように、「v」の音を正しく出し、「n」で終わることに注意しましょう。' },
+    'determine': { phonetic: '/dɪˈtɜːrmɪn/', tip: '最後の「e」は発音しません。「ディターミン」のように3音節で発音します。' },
+    'a': { phonetic: '/ə/ or /eɪ/', tip: '通常は弱く「ア」と発音しますが、強調する場合は「エイ」と発音します。' },
+    'an': { phonetic: '/ən/', tip: '弱く「アン」と発音します。次の単語と繋げて自然に発音しましょう。' },
+    'are': { phonetic: '/ɑːr/', tip: '「アー」と伸ばす音です。会話では弱く「アr」のように発音されることが多いです。' },
+    'were': { phonetic: '/wɜːr/', tip: '「ワー」ではなく「ウァー」に近い発音です。唇を軽く丸めて発音します。' },
+    'our': { phonetic: '/aʊr/', tip: '「アワー」のように二重母音で発音します。「アー」だけにならないよう注意しましょう。' },
+    'their': { phonetic: '/ðɛr/', tip: '「ゼアー」のように発音します。「th」の有声音を忘れずに。' },
+    'there': { phonetic: '/ðɛr/', tip: '「ゼアー」。「th」は舌先を歯の間に出して振動させます。' },
+    'where': { phonetic: '/wɛr/', tip: '「ウェア」のように発音します。「wh」は「w」の音で始めます。' },
+    'what': { phonetic: '/wʌt/', tip: '「ホワット」ではなく「ワット」に近い発音です。「wh」は「w」の音です。' },
+    'who': { phonetic: '/huː/', tip: '「フー」のように発音します。「w」は発音しません。' },
+    'how': { phonetic: '/haʊ/', tip: '「ハウ」と二重母音で発音します。口を大きく開けて「a」から「u」に移動します。' },
+  };
+
+  // ===== Generic pronunciation tips by pattern =====
+  function getGenericTip(word) {
+    const lower = word.toLowerCase();
+
+    if (lower.match(/th/)) {
+      return { phonetic: null, tip: '「th」の音が含まれています。舌先を上の前歯に当てて発音しましょう。有声音（the, this）か無声音（think, three）かを意識してください。' };
+    }
+    if (lower.match(/^r/) || lower.match(/r[aeiou]/)) {
+      return { phonetic: null, tip: '「r」の音に注意しましょう。舌を口の奥に引いて丸め、どこにも触れないようにして発音します。日本語の「ラ行」とは異なります。' };
+    }
+    if (lower.match(/^l/) || lower.match(/l[aeiou]/)) {
+      return { phonetic: null, tip: '「l」の音に注意しましょう。舌先を上の歯茎にしっかりつけて発音します。「r」と区別することが重要です。' };
+    }
+    if (lower.match(/v/)) {
+      return { phonetic: null, tip: '「v」の音が含まれています。上の前歯で下唇を軽く噛み、振動させて発音します。「b」の音とは異なります。' };
+    }
+    if (lower.match(/f/)) {
+      return { phonetic: null, tip: '「f」の音が含まれています。上の前歯で下唇を軽く噛み、息だけを出します。「h」の音とは異なります。' };
+    }
+    if (lower.match(/wh/)) {
+      return { phonetic: null, tip: '「wh」は通常「w」の音で発音します。唇を丸めて前に突き出すようにしましょう。' };
+    }
+    if (lower.match(/tion$|sion$/)) {
+      return { phonetic: null, tip: '語尾の「-tion/-sion」は「ション」と発音します。アクセントはその直前の音節に置くことが多いです。' };
+    }
+    if (lower.match(/ght$/)) {
+      return { phonetic: null, tip: '語尾の「-ght」の「gh」は発音しません。「t」の音だけになります。' };
+    }
+    if (lower.match(/ous$/)) {
+      return { phonetic: null, tip: '語尾の「-ous」は「アス」のように軽く発音します。' };
+    }
+    if (lower.match(/[aeiou]{2,}/)) {
+      return { phonetic: null, tip: '連続する母音に注意しましょう。英語では母音の組み合わせで特別な音になることがあります。ゆっくり正しい音を確認してみてください。' };
+    }
+
+    return { phonetic: null, tip: 'この単語の発音を確認しましょう。お手本の発音を聞いて、もう一度チャレンジしてみてください。' };
+  }
+
   // ===== State =====
   let state = loadState();
   let recognition = null;
   let isRecording = false;
+  let currentUtterance = null;
 
   // ===== DOM Elements =====
   const $ = id => document.getElementById(id);
@@ -104,11 +201,15 @@
     confetti: $('confetti'),
     toast: $('toast'),
     scoreCircle: $('scoreCircle'),
+    playModelBtn: $('playModelBtn'),
+    pronunciationAdvice: $('pronunciationAdvice'),
+    adviceList: $('adviceList'),
   };
 
   // ===== Initialization =====
   function init() {
     initSpeechRecognition();
+    initSpeechSynthesis();
     bindEvents();
     updateUI();
     updateStreak();
@@ -215,14 +316,96 @@
     };
   }
 
+  // ===== Speech Synthesis (Model Audio) =====
+  function initSpeechSynthesis() {
+    if (!('speechSynthesis' in window)) {
+      dom.playModelBtn.style.display = 'none';
+      return;
+    }
+  }
+
+  function playModelAudio() {
+    const text = dom.targetText.value.trim();
+    if (!text) return;
+
+    // Stop any current speech
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+      dom.playModelBtn.classList.remove('playing');
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = dom.langSelect.value;
+    utterance.rate = 0.85;
+    utterance.pitch = 1.0;
+
+    // Try to find a good voice for the language
+    const voices = window.speechSynthesis.getVoices();
+    const langPrefix = dom.langSelect.value.split('-')[0];
+    const matchingVoice = voices.find(v => v.lang.startsWith(langPrefix) && v.localService === false)
+      || voices.find(v => v.lang.startsWith(langPrefix));
+    if (matchingVoice) {
+      utterance.voice = matchingVoice;
+    }
+
+    utterance.onstart = () => {
+      dom.playModelBtn.classList.add('playing');
+    };
+
+    utterance.onend = () => {
+      dom.playModelBtn.classList.remove('playing');
+      currentUtterance = null;
+    };
+
+    utterance.onerror = () => {
+      dom.playModelBtn.classList.remove('playing');
+      currentUtterance = null;
+    };
+
+    currentUtterance = utterance;
+    window.speechSynthesis.speak(utterance);
+  }
+
+  function speakWord(word) {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.lang = dom.langSelect.value;
+    utterance.rate = 0.7;
+    utterance.pitch = 1.0;
+
+    const voices = window.speechSynthesis.getVoices();
+    const langPrefix = dom.langSelect.value.split('-')[0];
+    const matchingVoice = voices.find(v => v.lang.startsWith(langPrefix) && v.localService === false)
+      || voices.find(v => v.lang.startsWith(langPrefix));
+    if (matchingVoice) {
+      utterance.voice = matchingVoice;
+    }
+
+    window.speechSynthesis.speak(utterance);
+  }
+
   // ===== Event Bindings =====
   function bindEvents() {
     // Target text input
     dom.targetText.addEventListener('input', () => {
       const hasText = dom.targetText.value.trim().length > 0;
       dom.recordBtn.disabled = !hasText || !recognition;
+      dom.playModelBtn.disabled = !hasText || !('speechSynthesis' in window);
       dom.recordStatus.textContent = hasText ? 'マイクボタンを押して録音' : '文章を入力してください';
     });
+
+    // Play model audio button
+    dom.playModelBtn.addEventListener('click', playModelAudio);
+
+    // Ensure voices are loaded
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        // Voices loaded, button is ready
+      };
+    }
 
     // Record button
     dom.recordBtn.addEventListener('click', () => {
@@ -423,11 +606,11 @@
     dom.scoreLabel.className = 'score-label';
 
     // Set color based on score
-    const strokeColor = score >= 100 ? '#FFD700'
-      : score >= 80 ? '#00B894'
-      : score >= 60 ? '#6C5CE7'
-      : score >= 40 ? '#FDCB6E'
-      : '#E17055';
+    const strokeColor = score >= 100 ? '#F59E0B'
+      : score >= 80 ? '#10B981'
+      : score >= 60 ? '#2563EB'
+      : score >= 40 ? '#F59E0B'
+      : '#EF4444';
     dom.scoreFill.style.stroke = strokeColor;
 
     // Trigger animation
@@ -458,10 +641,13 @@
       dom.wordAnalysis.appendChild(chip);
     });
 
+    // Pronunciation advice for incorrect words
+    const incorrectWords = wordResults.filter(w => !w.correct).map(w => w.word);
+    displayPronunciationAdvice(incorrectWords);
+
     // Feedback
     const correctCount = wordResults.filter(w => w.correct).length;
     const totalWords = wordResults.length;
-    const incorrectWords = wordResults.filter(w => !w.correct).map(w => w.word);
     const encouragement = ENCOURAGEMENT[Math.floor(Math.random() * ENCOURAGEMENT.length)];
 
     let feedbackHTML = `<strong>${correctCount} / ${totalWords}</strong> 単語が正確に発音されました。<br>`;
@@ -479,6 +665,51 @@
     setTimeout(() => {
       dom.resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 200);
+  }
+
+  // ===== Display Pronunciation Advice =====
+  function displayPronunciationAdvice(incorrectWords) {
+    if (incorrectWords.length === 0) {
+      dom.pronunciationAdvice.style.display = 'none';
+      return;
+    }
+
+    dom.pronunciationAdvice.style.display = 'block';
+    dom.adviceList.innerHTML = '';
+
+    // Show advice for up to 5 words to keep it manageable
+    const wordsToAdvise = incorrectWords.slice(0, 5);
+
+    wordsToAdvise.forEach(word => {
+      const lower = word.toLowerCase();
+      const tip = PRONUNCIATION_TIPS[lower] || getGenericTip(lower);
+
+      const item = document.createElement('div');
+      item.className = 'advice-item';
+
+      let html = `<div class="advice-word">${escapeHTML(word)}</div>`;
+      if (tip.phonetic) {
+        html += `<div class="advice-phonetic">${escapeHTML(tip.phonetic)}</div>`;
+      }
+      html += `<div class="advice-tip">${escapeHTML(tip.tip)}</div>`;
+      html += `<button class="advice-listen-btn" data-word="${escapeHTML(word)}">&#x1F50A; 発音を聞く</button>`;
+
+      item.innerHTML = html;
+      dom.adviceList.appendChild(item);
+
+      // Add click handler for the listen button
+      item.querySelector('.advice-listen-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        speakWord(e.target.dataset.word || word);
+      });
+    });
+
+    if (incorrectWords.length > 5) {
+      const more = document.createElement('div');
+      more.style.cssText = 'font-size: 0.8rem; color: #64748B; text-align: center; margin-top: 8px;';
+      more.textContent = `他 ${incorrectWords.length - 5} 単語もお手本の発音で確認しましょう`;
+      dom.adviceList.appendChild(more);
+    }
   }
 
   function animateNumber(el, from, to, duration) {
@@ -669,12 +900,12 @@
 
   function renderScoreChart() {
     const buckets = [
-      { label: '0-19', min: 0, max: 19, count: 0, color: '#E17055' },
-      { label: '20-39', min: 20, max: 39, count: 0, color: '#E17055' },
-      { label: '40-59', min: 40, max: 59, count: 0, color: '#FDCB6E' },
-      { label: '60-79', min: 60, max: 79, count: 0, color: '#6C5CE7' },
-      { label: '80-99', min: 80, max: 99, count: 0, color: '#00B894' },
-      { label: '100', min: 100, max: 100, count: 0, color: '#FFD700' },
+      { label: '0-19', min: 0, max: 19, count: 0, color: '#EF4444' },
+      { label: '20-39', min: 20, max: 39, count: 0, color: '#EF4444' },
+      { label: '40-59', min: 40, max: 59, count: 0, color: '#F59E0B' },
+      { label: '60-79', min: 60, max: 79, count: 0, color: '#2563EB' },
+      { label: '80-99', min: 80, max: 99, count: 0, color: '#10B981' },
+      { label: '100', min: 100, max: 100, count: 0, color: '#F59E0B' },
     ];
 
     state.history.forEach(item => {
@@ -726,7 +957,7 @@
 
   function spawnConfetti() {
     dom.confetti.innerHTML = '';
-    const colors = ['#FFD700', '#FF6B6B', '#6C5CE7', '#00CEC9', '#00B894', '#FDCB6E'];
+    const colors = ['#2563EB', '#60A5FA', '#10B981', '#F59E0B', '#EF4444', '#93C5FD'];
     for (let i = 0; i < 40; i++) {
       const piece = document.createElement('div');
       piece.className = 'confetti-piece';
